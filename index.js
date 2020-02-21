@@ -8,6 +8,27 @@ const express = require('express')
     , app = express()
     , axios = require('axios');
 
+const { createLogger, format, transports } = require('winston');
+const logger = createLogger({
+    level: 'info',
+    format: format.combine(
+        format.timestamp({
+            format: 'YYYY-MM-DD HH:mm:ss'
+        }),
+        format.errors({ stack: true }),
+        format.splat(),
+        format.json()
+    ),
+    defaultMeta: { service: 'your-service-name' },
+    transports: [
+        //
+        // - Write to all logs with level `info` and below to `quick-start-combined.log`.
+        // - Write all logs error (and below) to `quick-start-error.log`.
+        //
+        new transports.File({ filename: 'error.log', level: 'error' }),
+        new transports.File({ filename: 'logger.log' })
+    ]
+});
 
 // Passport session setup.
 passport.serializeUser(function (user, done) {
@@ -32,13 +53,12 @@ passport.use(new InstagramStrategy({
             "profile": profile,
             "accessToken": accessToken
         };
+        logger.info("check here:::", user);
         process.nextTick(function () {
             return done(null, user);
         });
     }
 ));
-
-
 app.set('views', __dirname + '/index.html');
 app.set('view engine', 'html');
 app.use(cookieParser());
@@ -62,7 +82,7 @@ app.get('/auth/instagram', passport.authenticate('instagram', { scope: ['user_pr
 app.get('/auth/instagram/callback',
     passport.authenticate('instagram'),
     function (req, res) {
-        console.log('res::', res);
+        console.log('res::.000', res);
         if (req.user) {
             console.log('check callback::', req.user.accessToken);
             async function callInstagramAPI() {
@@ -77,6 +97,7 @@ app.get('/auth/instagram/callback',
             callInstagramAPI()
                 .then(response => {
                     console.log("data::::", response.data);
+                    logger.info('check data::', response.data);
                     res.send(response.data);
                 })
         }
