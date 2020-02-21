@@ -38,14 +38,14 @@ passport.use(new InstagramStrategy({
 ));
 
 
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
+app.set('views', __dirname + '/index.html');
+app.set('view engine', 'html');
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(session({ secret: 'keyboard cat', key: 'sid' }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + ''));
 
 app.get('/', function (req, res) {
     res.render('index', { user: req.user });
