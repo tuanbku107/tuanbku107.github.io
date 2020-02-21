@@ -56,7 +56,7 @@ app.get('/account', ensureAuthenticated, function (req, res) {
     res.render('account', { user: req.user });
 });
 
-app.get('/auth/instagram', passport.authenticate('instagram'));
+app.get('/auth/instagram', passport.authenticate('instagram', { scope: ['user_profile', 'user_media'] }));
 
 
 app.get('/auth/instagram/callback',
@@ -80,7 +80,7 @@ app.get('/auth/instagram/callback',
                     res.send(response.data);
                 })
         }
-        // res.redirect('/');
+        res.redirect('/');
     });
 
 app.get('/logout', function (req, res) {
