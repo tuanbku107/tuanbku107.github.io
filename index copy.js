@@ -1,6 +1,6 @@
 const express = require('express')
     , passport = require('passport')
-    , InstagramStrategy = require('passport-instagram').Strategy
+    , FacebookStrategy = require('passport-facebook').Strategy
     , session = require('express-session')
     , cookieParser = require('cookie-parser')
     , bodyParser = require('body-parser')
@@ -19,11 +19,11 @@ passport.deserializeUser(function (obj, done) {
 });
 
 
-// Use the InstagramStrategy within Passport.
+// Use the FacebookStrategy within Passport.
 
-passport.use(new InstagramStrategy({
-    clientID: config.INSTAGRAM_CLIENT_ID,
-    clientSecret: config.INSTAGRAM_CLIENT_SECRET,
+passport.use(new FacebookStrategy({
+    clientID: config.facebook_api_key,
+    clientSecret: config.facebook_api_secret,
     callbackURL: config.callback_url
 },
     function (accessToken, refreshToken, profile, done) {
@@ -55,11 +55,11 @@ app.get('/account', ensureAuthenticated, function (req, res) {
     res.render('account', { user: req.user });
 });
 
-app.get('/auth/instagram', passport.authenticate('instagram'));
+app.get('/auth/facebook', passport.authenticate('facebook'));
 
 
-app.get('/auth/instagram/callback',
-    passport.authenticate('instagram'),
+app.get('/auth/facebook/callback',
+    passport.authenticate('facebook'),
     function (req, res) {
         if (req.user) {
             console.log('check callback::', req.user.accessToken);
