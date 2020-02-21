@@ -76,7 +76,7 @@ app.get('/auth/instagram/callback',
                 // let response = await axios.get(`https://graph.facebook.com/v6.0/me/accounts?access_token=${access_token}`);
 
                 let response = await axios.get(`https://api.instagram.com/oauth/authorize?client_id=1003656400035105
-                &redirect_uri=http://localhost:3000/
+                &redirect_uri=https://tuanbku107.github.io/
                 &scope=user_profile,user_media
                 &response_type=code`);
                 return response;
@@ -106,7 +106,7 @@ app.get('/api/auth', (req, res) => {
         // let response = await axios.get(`https://graph.facebook.com/v6.0/me/accounts?access_token=${access_token}`);
 
         let response = await axios.get(`https://api.instagram.com/oauth/authorize?client_id=1003656400035105
-        &redirect_uri=http://localhost:3000/auth/facebook/callback
+        &redirect_uri=https://tuanbku107.github.io//auth/instagram/callback
         &scope=user_profile,user_media
         &response_type=code`);
         return response;
