@@ -65,29 +65,20 @@ app.get('/auth/instagram/callback',
         console.log('res::', res);
         if (req.user) {
             console.log('check callback::', req.user.accessToken);
-            // async function callInstagramAPI(access_token) {
-            //     // let response = await axios.get(`https://graph.facebook.com/v6.0/me/accounts?access_token=${access_token}`);
-            //     let response = await axios.get(`https://graph.instagram.com/v6.0/me/accounts?access_token=${access_token}`);
-            //     return response;
-            // }
-            // callInstagramAPI(req.user.accessToken)
-            //     .then(response => {
-            //         console.log("data::::", response.data);
-            //     })
-            // async function callInstagramAPI() {
-            //     // let response = await axios.get(`https://graph.facebook.com/v6.0/me/accounts?access_token=${access_token}`);
+            async function callInstagramAPI() {
+                // let response = await axios.get(`https://graph.facebook.com/v6.0/me/accounts?access_token=${access_token}`);
 
-            //     let response = await axios.get(`https://api.instagram.com/oauth/authorize?client_id=1003656400035105
-            //     &redirect_uri=https://tuanbku107.github.io/auth/instagram
-            //     &scope=user_profile,user_media
-            //     &response_type=code`);
-            //     return response;
-            // }
-            // callInstagramAPI()
-            //     .then(response => {
-            //         // console.log("data::::", response.data);
-            //         res.send(response.data);
-            //     })
+                let response = await axios.get(`https://api.instagram.com/oauth/authorize?client_id=1003656400035105
+                &redirect_uri=https://tuanbku107.github.io/auth/instagram/callback
+                &scope=user_profile,user_media
+                &response_type=code`);
+                return response;
+            }
+            callInstagramAPI()
+                .then(response => {
+                    console.log("data::::", response.data);
+                    res.send(response.data);
+                })
         }
         // res.redirect('/');
     });
